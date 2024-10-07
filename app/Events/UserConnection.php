@@ -33,12 +33,7 @@ class UserConnection implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('user-connection'),
+            new PresenceChannel('users'),
         ];
-    }
-
-    public function broadcastAs()
-    {
-        return 'user.connection';
     }
 }

@@ -25,6 +25,23 @@ window.Echo = new Echo({
 });
 
 
-window.Echo.channel('chat').listen('TestEvent',(e)=>{
+window.Echo.channel('chat').listen('TestEvent', (e) => {
     console.log(e);
 });
+
+window.Echo.private('chat.' + recipientId)
+    .listen('MessageSent', (event) => {
+        console.log('New message:', event.message);
+    });
+
+window.Echo.join('users')
+    .here(users => {
+        console.log('Users online:', users);
+    })
+    .joining(user => {
+        console.log(`${user.username} is online.`);
+    })
+    .leaving(user => {
+        console.log(`${user.username} went offline.`);
+    });
+

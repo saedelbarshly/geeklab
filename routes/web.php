@@ -1,8 +1,11 @@
 <?php
 
 use App\Events\TestEvent;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\MessagingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,17 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-use App\Http\Controllers\MessagingController;
-use App\Models\User;
-
-Route::middleware('auth')->group(function () {
-    Route::get('/chat', function () {
-        $users = User::all(); // Fetch all users to select for private messaging
-        return view('chat', compact('users'));
-    });
-
-    Route::post('/send-message', [MessagingController::class, 'sendPrivateMessage']);
+Route::middleware(['auth'])->group(function () {
+    Route::post('/send-message', [ChatController::class, 'sendMessage']);
+    Route::post('/user-status', [ChatController::class, 'updateUserStatus']);
+    Route::post('/mark-seen/{message}', [ChatController::class, 'markAsSeen']);
 });
-
 
 require __DIR__.'/auth.php';

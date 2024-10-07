@@ -10,8 +10,9 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class MessageSent
+class MessageSent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -36,8 +37,13 @@ class MessageSent
         ];
     }
 
-    public function broadcastAs()
+    public function broadcastWith(): array
     {
-        return 'MessageSent';
+        return [
+            'message' => $this->message->content,
+            'sender_id' => $this->message->sender_id,
+            'recipient_id' => $this->message->recipient_id,
+            'timestamp' => now(),
+        ];
     }
 }
