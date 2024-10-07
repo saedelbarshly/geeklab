@@ -28,7 +28,6 @@ class AuthController extends Controller
                 'message' => "Register successful 😉",
             ]);
         } catch (\Throwable $th) {
-            dd($th);
             return response()->json(['message' => "Somthing went wrong !"],400);
         }
     }
@@ -39,6 +38,7 @@ class AuthController extends Controller
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'],400);
             }
+            $user->is_online = true;
             $token = $user->createToken('auth-token')->plainTextToken;
             return response()->json([
                 'data' => new UserResource($user),
