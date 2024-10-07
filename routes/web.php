@@ -27,10 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/send-message', [ChatController::class, 'sendMessage']);
-    Route::post('/user-status', [ChatController::class, 'updateUserStatus']);
-    Route::post('/mark-seen/{message}', [ChatController::class, 'markAsSeen']);
+Route::middleware(['auth'])->controller(ChatController::class,)->group(function () {
+    Route::post('/send-message', 'sendMessage');
+    Route::post('/user-status', 'updateUserStatus');
+    Route::post('/mark-seen/{message}', 'markAsSeen');
 });
 
 require __DIR__.'/auth.php';

@@ -12,8 +12,8 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/messages', [MessageController::class, 'index']);
-    Route::post('/send-message', [MessageController::class, 'store']);
-    Route::post('/messages/seen', [MessageController::class, 'markAsSeen']);
+Route::middleware('auth:sanctum')->controller(MessageController::class)->group(function () {
+    Route::get('/messages', 'index');
+    Route::post('/send-message', 'store');
+    Route::post('/messages/seen', 'markAsSeen');
 });
