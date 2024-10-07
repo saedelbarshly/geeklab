@@ -9,12 +9,18 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class LogoutTest extends TestCase
 {
     use RefreshDatabase;
+    
+    protected $user;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+    }
 
     public function test_user_can_logout_successfully()
     {
-        $user = User::factory()->create();
 
-        $this->actingAs($user, 'api');
+        $this->actingAs($this->user, 'api');
 
         $response = $this->postJson('/api/logout');
 
