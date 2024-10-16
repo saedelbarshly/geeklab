@@ -1,5 +1,6 @@
 <?php
 
+use App\service\RabbitMQService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\MessageController;
@@ -16,4 +17,11 @@ Route::middleware('auth:sanctum')->controller(MessageController::class)->group(f
     Route::get('/messages', 'index');
     Route::post('/send-message', 'store');
     Route::post('/messages/seen', 'markAsSeen');
+});
+
+
+Route::get('/sendMessage',function(){
+    $rabbitmqService = new RabbitMQService();
+    $rabbitmqService->sendMessage('2dbCM', 'Hello RabbitMQ!');
+    return response()->json(['message' => 'Message sent successfully']);
 });
